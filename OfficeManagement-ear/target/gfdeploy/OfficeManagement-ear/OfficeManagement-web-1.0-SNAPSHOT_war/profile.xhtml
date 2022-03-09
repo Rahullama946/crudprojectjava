@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>  
+            <p:growl id="growl" life="6000" globalOnly="true"/>
+            <p:menubar>
+                <p:submenu label="Home">
+                </p:submenu>
+                <p:submenu label="Plan">
+                </p:submenu>
+                <f:facet name="options">
+                    <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>
+                    <!--<p:commandButton action="#{studentMBeans.redirect()}" value="signup"></p:commandButton>-->
+                    <p:commandButton action="#{officeMBean.redirect2()}" value="logout"></p:commandButton>
+                </f:facet>
+            </p:menubar>
+        </h:form>
+
+        <h:form id="uploadForm" enctype="multipart/form-data">
+            <h:panelGrid columns="2">
+
+                <p:fileUpload id="file"  fileUploadListener="#{profileManageBean.profileImageUploadHandler1}"
+                              mode="advanced" 
+                              update="messages"
+                              sizeLimit="10000000" 
+                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/" required="true" />
+                <p:growl id="messages" showDetail="true"/>
+                <!--<h:message for="file" style="color: red;" />-->
+
+                <!--<h:commandButton value="submit" />-->
+            </h:panelGrid>
+        </h:form>
+
+        <!--this is the datatable of profile-->
+        <h:form id="pform">
+            <!--display the list of user in the same page by extracting from db-->
+            <div class="card">
+                <p:spacer height="20px"></p:spacer>    
+                <p:dataTable value="#{profileManageBean.profileImageUploadHandler1}" var="p" rowIndexVar="id"> <!--paginator="true" -->   
+                    <p:column headerText="Profile ID" style="width:4%">
+                        <h:outputText value="#{id+1}"/>                       
+                    </p:column>
+                    <p:column headerText="Profile Name" style="width:24%">
+                        <h:outputText value="" />
+                    </p:column>
+                    <p:column headerText="profile Image" style="width:24%">
+                        <p:graphicImage   alt="image"  value="#{profileManageBean.categoryimg}" cache="false"  >
+                        </p:graphicImage>
+                    </p:column>
+                </p:dataTable>    
+            </div>
+        </h:form>
+
+    </h:body>
+</html>
+

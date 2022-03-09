@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+        <!--<h:panelGroup layout="block" id="mainPanel">-->
+        <h:form id="mainform" >
+           
+            <center>
+                <p:growl id="growl" />
+                <p:panelGrid columns="2" id="panel1" rendered="#{!studentMBeans.tableflag}">
+                    <h3>Student Name</h3>
+                    <!--here we need directly instantiate the entity field to hold the data(entity holding the data)--> 
+                    <p:inputText value='#{studentMBeans.students.studentName}'></p:inputText>
+                    <!--another way is to create a entity field in the bean to hold the data(bean holding the data)--> 
+                    <h3>Roll No</h3>
+                    <p:inputText value='#{studentMBeans.students.rollNo}'></p:inputText>
+                    <h3>Subject</h3>
+                    <p:inputText value='#{studentMBeans.students.subject}'></p:inputText>
+                    <h3>Classes</h3>
+                    <p:inputText value='#{studentMBeans.students.classes}'></p:inputText>
+                    <!--newly added select faculty button--> 
+
+                    <h3>Faculty</h3>
+                    <p:selectOneMenu value="#{studentMBeans.students.faculty}" converter="#{facultyConverter}" required="true" requiredMessage="select one">
+                        <f:selectItem itemLabel="select one" itemValue=""/>
+                        <f:selectItems value="#{studentMBeans.facultyList}" var="ccc" itemLabel="#{ccc.facultyName}" itemValue="#{ccc}"/>
+                        <p:ajax process="@this" global="false" listener="#{studentMBeans.ajaxCalled()}" update="mainform:growl"/>
+                    </p:selectOneMenu>
+                    <b/>
+                    <b/>
+    <!--                    <h:selectOneMenu id="txt3" value="#{studentMBeans.facultyList}" var="f" required="true" label="Text 3">
+                            <f:selectItem itemLabel="Select One" itemValue="" noSelectionOption="true" />
+                            <f:selectItems  
+                                   itemLabel="#{c.name}" itemValue="#{c}"/>
+                        </h:selectOneMenu>-->
+                    <!--end of the button--> 
+                    <p:commandButton update="mainform,mainform:growl" action="#{studentMBeans.addStudent()}" value="add"></p:commandButton>
+                    
+                </p:panelGrid>
+            </center>
+
+            <h:outputText value="&#160;" />
+            <h:outputText value="&#160;" />
+
+            <!--1>here we have a boolen proprty rendered whose value is true or false i.e false=hide and true=show-->
+            <!--prepare a boolean variable in managed bean for that-->
+            <p:dataTable rendered="#{studentMBeans.tableflag}" id="formtables" var='s' value='#{studentMBeans.studentList}' rowIndexVar="ind">
+                <!--the value rowIndexVar will give the value similar to id that increments by one so we use it to be display in ui-->
+                <p:column headerText="Id">
+                    <h:outputText value='#{ind+1}'/>
+                </p:column>
+                <p:column headerText="Student Name">
+                    <h:outputText value='#{s.studentName}'></h:outputText>
+                </p:column>
+                <p:column headerText="Roll No">
+                    <h:outputText value='#{s.rollNo}'></h:outputText>
+                </p:column>
+                <p:column headerText="Subject">
+                    <h:outputText value='#{s.subject}'></h:outputText>
+                </p:column>
+                <p:column headerText="Classes">
+                    <h:outputText value='#{s.classes}'></h:outputText>
+                </p:column>
+
+                <!--this is added for select option in above form-->
+                <p:column headerText="facultyName">
+                    <h:outputText value="#{s.faculty.facultyName}"></h:outputText>
+                </p:column>
+                <!--                 <p:column headerText="facultyId">
+                                     <h:outputText value='#{s.facId}'></h:outputText>
+                                </p:column>-->
+
+                <p:column headerText="Edit">
+                    <p:commandButton update="mainform,dialog1" value="edit" action='#{studentMBeans.update(s)}' oncomplete="PF('dialogform').show()" ></p:commandButton>
+                </p:column>
+                <!--below onclick properties is set to give alert button before removing from the ddb-->
+                <p:column headerText="Delete">
+                    <p:commandButton update="mainform" value="delete" action='#{studentMBeans.delete(s)}' 
+                                     onclick="if (!window.confirm('Are you sure?')) {
+                                                 return false;
+                                             }"></p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <!--        </h:form>-->
+            <!--</h:panelGroup>-->
+        </h:form>
+
+
+        <!--here we now create two dialog boxes--> 
+        <!--one dialog box is for the form dialog box to submit the updated value-->
+        <!--second is datatable that will display the updated value in the signup.xhtml page-->
+        <!--//simple dialog form as replacement for the form edit option-->
+        <p:dialog widgetVar="dialogform" id="dialog1"
+                  header="addStudent"
+                  closable="true" 
+                  modal="true" 
+                  showEffect="fade" 
+                  closeOnEscape="true" hideEffect="fade" 
+                  resizable="false">
+            <h:form id="formOne">
+                <center>
+                    <p:panelGrid columns="2" id="panel2">
+                        <h3>Student Name</h3>
+                        <!--here we need directly instantiate the entity field to hold the data(entity holding the data)--> 
+                        <p:inputText value='#{studentMBeans.students.studentName}'></p:inputText>
+                        <!--another way is to create a entity field in the bean to hold the data(bean holding the data)--> 
+                        <!--<p:inputText value='#studentMBeans.studentName'></p:inputText>-->
+                        <h3>Roll No</h3>
+                        <p:inputText value='#{studentMBeans.students.rollNo}'></p:inputText>
+                        <h3>Subject</h3>
+                        <p:inputText value='#{studentMBeans.students.subject}'></p:inputText>
+                        <h3>Classes</h3>
+                        <p:inputText value='#{studentMBeans.students.classes}'></p:inputText>
+
+                        <h3>Faculty</h3>
+                        <p:selectOneMenu value="#{studentMBeans.students.faculty}" converter="#{facultyConverter}" required="true" requiredMessage="select one">
+                            <f:selectItem itemLabel="select one" itemValue=""/>
+                            <f:selectItems value="#{studentMBeans.facultyList}" var="ccc" itemLabel="#{ccc.facultyName}" itemValue="#{ccc}"/>
+                            <p:ajax process="@this" global="false" listener="#{studentMBeans.ajaxCalled()}" update="mainform:growl"/>
+                        </p:selectOneMenu>
+                        <p:commandButton oncomplete="PF('dialogform').hide();" value="cancel" ></p:commandButton>
+                        <p:commandButton update="formOne,mainform:formtables" action="#{studentMBeans.updateClicked()}" value="update" oncomplete="PF('dialogform').hide();"></p:commandButton>
+                    </p:panelGrid>
+                </center>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+

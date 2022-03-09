@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="loginform">
+            <center>
+                <p:growl id="growl" />
+                <p:panelGrid columns="2" id="panel1">
+                    <h3>Student Name</h3>
+                    <!--here we need directly instantiate the entity field to hold the data(entity holding the data)--> 
+                    <p:inputText value='#{officeMBean.userName}'></p:inputText>
+                    <!--another way is to create a entity field in the bean to hold the data(bean holding the data)--> 
+                    <h3>Password</h3>
+                    <p:inputText value='#{officeMBean.password}'></p:inputText>
+                    <p:commandButton update="loginform,loginform:growl" action="#{officeMBean.login()}" value="login"></p:commandButton>
+                </p:panelGrid>
+            </center>
+        </h:form>
+    </h:body>
+</html>
+

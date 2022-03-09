@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"  >
+    <h:head>
+        <title>TODO supply a title</title>
+        <style>
+            .bImg{
+                background-image: url("resources/images/background.jpg");
+            }
+        </style>
+    </h:head>
+    <body> <!--class="bImg">-->
+        <!--adding images in the jsf page-->
+        <!--<h:graphicImage value="resources/images/background.jpg"></h:graphicImage>-->
+        <!--resources is the default libary provided to jsf page so that one can use it below way-->
+        <!--<h:graphicImage library="images" name="background.jpg"></h:graphicImage>-->
+        
+        <!--menubar-->
+        <h:form>  
+            <p:growl id="growl" life="6000" globalOnly="true"/>
+            <p:menubar>
+                <p:submenu label="Home">
+                </p:submenu>
+                <p:submenu label="Plan">
+                </p:submenu>
+                <f:facet name="options">
+                    <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>
+                    <p:commandButton action="#{studentMBeans.redirect()}" value="signup"></p:commandButton>
+                    <p:commandButton action="#{officeMBean.redirect1()}" value="login"></p:commandButton>
+                </f:facet>
+            </p:menubar>
+        </h:form>
+        <!--form to create the user-->
+        <h:form id="mainform"> 
+            <center>
+                <!--here we add id in panel grid and which will be passed on update property to clear the data from the table after clicking the save button-->
+                <h:panelGrid id="panel1"  columns="2">
+                    <h3>User Name</h3>
+                    <p:inputText id="username" value="#{officeMBean.userName}"></p:inputText>
+                    <h3>Email</h3>
+                    <p:inputText id="rollno" value="#{officeMBean.email}"></p:inputText>
+                    <h3>Password</h3>
+                    <p:inputText id="subject" value="#{officeMBean.password}"></p:inputText>
+                    <h3>Address</h3>
+                    <p:inputText id="address" value="#{officeMBean.address}"></p:inputText>
+                    <p:commandButton update="formtable panel1" value="Save" action="#{officeMBean.save()}"/>
+                    <p:commandButton update="formtable panel1" value="update" action="#{officeMBean.updateClicked()}"/>
+                </h:panelGrid>
+            </center>
+            <h:outputText value="&#160;" />
+            <h:outputText value="&#160;" />
+            <!--display the list of user in the same page by extracting from db-->
+            <div class="card">
+                <p:dataTable id="formtable" var="u" value="#{officeMBean.userList}" rowIndexVar="ind"><!-- here rowIndexVar is used to give id that increments by 1-->
+                    <!--used to set the id like structure as it is incremented everytime  by value of 1-->
+                    <p:column headerText="S.N.">
+                        <h:outputText value="#{ind+1}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{u.userName}" />
+                    </p:column>
+                    <p:column headerText="Email">
+                        <h:outputText value="#{u.email}" />
+                    </p:column>
+                    <p:column headerText="Password">
+                        <h:outputText value="#{u.password}" />
+                    </p:column>
+                    <p:column headerText="Address">
+                        <h:outputText value="#{u.address}"/>
+                    </p:column>
+
+                    <!--in the above as we define u var to represnt the list of user however u will  provide  a user at a time just like a foreach loop-->
+                    <p:column headerText="Edit">
+                        <p:commandButton update="mainform" value="Edit" action="#{officeMBean.update(u)}"/>
+                    </p:column>
+                    <p:column headerText="Delete">
+                        <p:commandButton update="mainform" value="Delete" action="#{officeMBean.Delete(u)}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </body>
+</html>
