@@ -24,6 +24,7 @@ public class Profile implements Serializable {
 
     public String getImgNameThumbnail() {
         return imgNameThumbnail;
+//        sout 
     }
 
     public void setImgNameThumbnail(String imgNameThumbnail) {

@@ -144,17 +144,7 @@ public class ProfileManageBean {
 
             profile.setImgNameThumbnail("thumb_" + s);
             session.persist(profile);
-//            if (profileList != null) {
-//                profileList.add(profile);
-////            System.out.println(" added student");
-//            } else {
-//                profileList = new ArrayList<>();
-//                profileList.add(profile);
-//            }
-//            System.out.println("saved successful");
-
         } catch (IOException ex) {
-//            Logger.getLogger(VehicleMisManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
     }

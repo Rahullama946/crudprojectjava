@@ -39,24 +39,42 @@
         </h:form>
 
         <!--this is the datatable of profile-->
-        <h:form id="pform">
-            <!--display the list of user in the same page by extracting from db-->
+<!--        <h:form id="pform">
+            display the list of user in the same page by extracting from db
             <div class="card">
+                <p:dataTable id="count">
+                    <p:column headerText="S.N.">
+                        <h:outputText value="#{id+1}" />
+                    </p:column>
+                    <p:column>
+                        <h:commandLink value="#{list.username}" action="#{customerManager.view}"  />
+                    </p:column>
+                </p:dataTable>
                 <p:spacer height="20px"></p:spacer>    
-                <p:dataTable value="#{profileManageBean.profileImageUploadHandler1}" var="p" rowIndexVar="id"> <!--paginator="true" -->   
+                <p:dataTable value="" var="p" rowIndexVar="id" paginator="true">    
+                    <f:facet name="header">  
+                        Available Categories  
+                    </f:facet>
+
                     <p:column headerText="Profile ID" style="width:4%">
                         <h:outputText value="#{id+1}"/>                       
                     </p:column>
+
                     <p:column headerText="Profile Name" style="width:24%">
                         <h:outputText value="" />
                     </p:column>
+
                     <p:column headerText="profile Image" style="width:24%">
-                        <p:graphicImage   alt="image"  value="#{profileManageBean.categoryimg}" cache="false"  >
+                        <p:graphicImage   alt="image"  value="" cache="false"  >
                         </p:graphicImage>
                     </p:column>
+
+                    <p:column style="width:4%">
+                        <p:commandButton value="Delete" action="}"  update=":pform:count"/>
+                    </p:column>    
                 </p:dataTable>    
             </div>
-        </h:form>
+        </h:form>-->
 
     </h:body>
 </html>
