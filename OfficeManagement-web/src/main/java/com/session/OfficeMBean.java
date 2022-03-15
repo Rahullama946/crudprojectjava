@@ -29,15 +29,15 @@ public class OfficeMBean {
 // init() method will run anyhow no matter what so it will retrive the userlist from session bean
     private User user;
     private ArrayList<User> userList = new ArrayList<>();
-    
-   
-    
+
     @PostConstruct
     public void init() {
         userList = session.retrieveAllUser();
     }
 
     public String redirect1() {
+        userName = "rahul";
+        password = "rahul";
         return "/login.xhtml";
     }
 
@@ -163,6 +163,7 @@ public class OfficeMBean {
         } else {
             FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful", "Successful");
             FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+            System.out.println("this is run");
             return "/profile.xhtml";
         }
     }

@@ -5,29 +5,32 @@
  */
 package com.session;
 
+import antlr.StringUtils;
 import com.entities.Profile;
-import com.entities.Student;
-import com.entities.User;
+import com.mysql.jdbc.Util;
 import com.officeManagement.sessionBeans.OfficeSessionBean;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.imageio.ImageIO;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -35,12 +38,11 @@ import org.primefaces.model.UploadedFile;
  * @author DELL
  */
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class ProfileManageBean {
 
     @EJB(beanName = "officeSessionBean")
     private OfficeSessionBean session;
-    
 
     //    private List<Profile> list;
     //    private DataModel<Profile> dataModel;
@@ -102,6 +104,13 @@ public class ProfileManageBean {
     //    public void setUploadedFile(UploadedFile uploadedFile) {
     //        this.uploadedFile = uploadedFile;
     //    }
+    private List<Profile> profileList;
+
+    @PostConstruct
+    public void init() {
+        profileList = session.retrieveAllProfile();
+    }
+
     public void profileImageUploadHandler1(FileUploadEvent event) {
 
         profileImageUploadHandler(event.getFile());
@@ -128,11 +137,10 @@ public class ProfileManageBean {
             while ((read = in.read(bytes)) != -1) {
                 out.write(bytes, 0, read);
             }
-            System.out.println("destination" + destination);
+//            System.out.println("destination" + destination);
 
             Profile profile = new Profile();
             profile.setProfileName(s);
-//            bus.setImgName(s);
 
             in.close();
             out.flush();
@@ -147,6 +155,64 @@ public class ProfileManageBean {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public List<Profile> getFilePath() {
+        return profileList;
+    }
+
+    public OfficeSessionBean getSession() {
+        return session;
+    }
+
+    public void setSession(OfficeSessionBean session) {
+        this.session = session;
+    }
+
+    public List<Profile> getProfileList() {
+        return profileList;
+    }
+
+    public void setProfileList(List<Profile> profileList) {
+        this.profileList = profileList;
+    }
+
+    //    this string is used to save the profileimageName 
+    private String fileName;
+
+    public void triggerdialog(Profile profile) {
+        fileName = profile.getProfileName();
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileName() {
+        System.out.println("file " + fileName);
+        return fileName;
+    }
+
+//    private StreamedContent file;
+//
+//    public void downloadFile() {
+//        
+//        InputStream stream=this.getClass().getResourceAsStream(file.);
+//        System.out.println("stream "+stream.toString());
+//        file = new DefaultStreamedContent(stream, "image/jpeg", fileName);
+//    }
+//
+//    public StreamedContent getFile() {
+//        return this.file;
+//    }
+//
+    public StreamedContent getDownloadFile() throws FileNotFoundException {
+        String fileName2 = getFileName();
+        System.out.println("str" + fileName2);
+        String s = "C:\\Users\\DELL\\Documents\\images\\";
+
+        File file = new File(s, fileName2);
+        return new DefaultStreamedContent(new FileInputStream(file), "image/jpeg", file.getName());
     }
 
     public ProfileManageBean() {

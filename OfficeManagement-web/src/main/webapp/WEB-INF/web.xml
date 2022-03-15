@@ -9,9 +9,13 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <servlet>
+<!--    <servlet>
         <servlet-name>ImageServlet</servlet-name>
         <servlet-class>com.controller.rahul.ImageServlet</servlet-class>
+    </servlet>-->
+    <servlet>
+        <servlet-name>FileServlet</servlet-name>
+        <servlet-class>com.controller.rahul.FileServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
@@ -23,9 +27,14 @@
         <url-pattern>/faces/*</url-pattern>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+<!--    <servlet-mapping>
         <servlet-name>ImageServlet</servlet-name>
-        <url-pattern>/ImageServlet</url-pattern>
+        <url-pattern>/imgServlet</url-pattern>
+    </servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>FileServlet</servlet-name>
+        <url-pattern>/getImage/*</url-pattern>
+        <!--here we should not miss * symbols as it is path the need to be added as name of the image in profile view along with given url as:/getImage/profile name-->
     </servlet-mapping>
     <session-config>
         <session-timeout>45</session-timeout>

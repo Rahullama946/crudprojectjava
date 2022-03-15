@@ -17,7 +17,7 @@
                     <!--another way is to create a entity field in the bean to hold the data(bean holding the data)--> 
                     <h3>Password</h3>
                     <p:inputText value='#{officeMBean.password}'></p:inputText>
-                    <p:commandButton update="loginform,loginform:growl" action="#{officeMBean.login()}" value="login"></p:commandButton>
+                    <p:commandButton update="loginform,loginform:growl" ajax="false" action="#{officeMBean.login()}" value="login"></p:commandButton>
                 </p:panelGrid>
             </center>
         </h:form>

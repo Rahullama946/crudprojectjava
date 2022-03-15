@@ -59,10 +59,17 @@ public class OfficeSessionBean {
 //        below code is native query 
         String sql="select * from user u where u.`DelFlag`=false and u.`UserName`='"+username+"' and u.`password`='"+pass+"'";
         try{
-        return (User)em.createNativeQuery(sql, User.class).getSingleResult();//it will return 
+        return (User)em.createNativeQuery(sql, User.class).getSingleResult();//it will return a single user from db that satisfies the sql query
         }catch(NoResultException ne){
             return null;
         }
+    }
+    
+    //retrieve paths of image from the profile enities saved int he db
+     public ArrayList<Profile> retrieveAllProfile() {
+//        below query are the hbql query example
+       Query query=em.createQuery("SELECT p FROM Profile p",Profile.class);
+       return (ArrayList<Profile>) query.getResultList();
     }
    
 }
